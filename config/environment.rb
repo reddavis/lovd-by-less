@@ -34,10 +34,8 @@ Rails::Initializer.run do |config|
   config.gem 'mocha', :version=> '0.9.3'
   config.gem 'redgreen', :version=> '1.2.2' unless ENV['TM_MODE']
   config.gem 'gcnovus-avatar', :version=> '0.0.7', :lib => 'avatar'
-  
-  
-  
-  
 end
+
+require 'lib/embedit_ruby'
 
 Less::JsRoutes.generate!
