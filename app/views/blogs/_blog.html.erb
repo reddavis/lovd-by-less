@@ -13,7 +13,7 @@ blog ||= @blog
 
 	<h1><%= sanitize textilize(blog.title) %></h1>
 	<div>
-	  <%= blog_body_content blog %>
+	  <%= body_content(blog.body) %>
 	</div>
 	<div id="border_top"><%= "Comments (#{blog.comments.size})" %> | <%= inline_tb_link('Add a Comment', "#{dom_id(blog)}_new_comment", :title => "Leaving A Comment On #{h blog.title}") if @p %>
   </div>
@@ -30,7 +30,7 @@ blog ||= @blog
 		<div id="<%= dom_id(blog) %>_new_comment" class="hidden">
 			<% less_remote_form_for :comment, :url => blog_comments_path(blog), :html => { :id => "#{dom_id(blog)}_comment_form"} do |f| %>
 				<%= f.text_area :comment %>
-    		To include a youtube video use: [youtube: address_of_video]
+    		To embed media just wrap the url in [embedit: url_goes_here]. <%= link_to 'Here a list of supported services', 'http://embedit.me/supported-services' %>.
 				<div class="row button">
 				<%= f.submit 'Add Comment', :class=>'button' %>
 				<div class="clear"></div>

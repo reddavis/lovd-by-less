@@ -50,7 +50,7 @@ module ApplicationHelper
       :class => 'thickbox'
     }.merge!(html)
     tb_opts = {
-      :height => 300,
+      :height => 320,
       :width => 400,
       :inlineId => inlineId
     }.merge!(tb)
@@ -59,14 +59,12 @@ module ApplicationHelper
     link_to(link_text, path, html_opts)
   end
   
-  def tb_video_link youtube_unique_path
-    return if youtube_unique_path.blank?
-    youtube_unique_id = youtube_unique_path.split(/\/|\?v\=/).last.split(/\&/).first
-    p youtube_unique_id
-    client = YouTubeG::Client.new
-    video = client.video_by YOUTUBE_BASE_URL+youtube_unique_id rescue return "(video not found)"
-    id = Digest::SHA1.hexdigest("--#{Time.now}--#{video.title}--")
-    inline_tb_link(video.title, h(id), {}, {:height => 355, :width => 430}) + %(<div id="#{h id}" style="display:none;">#{video.embed_html}</div>)
+  def tb_video_link(embedit_url)
+    return if embedit_url.blank?
+    video = EmbeditRuby::Url.new(embedit_url, :width => 355, :width => 430)
+    return "(video not found)" if video.valid? == 'false'
+    id = rand(99)
+    inline_tb_link(video.title, id, {}, {:height => 355, :width => 430}) + %(<div id="#{id}" style="display:none;">#{video.html}</div>)
   end
   
   def me
@@ -79,5 +77,17 @@ module ApplicationHelper
   
   def if_admin
     yield if is_admin? @u
+  end
+  
+  def body_content(post, height=280)
+    out = sanitize textilize(post)
+    embedables = post.scan(/\[embedit:.+\]/).each do |embed|
+      url = embed.match(/\[embedit:(.+)\]/)[1].strip!
+      embedit = EmbeditRuby::Url.new(url, :height => height)
+      if embedit.valid? == 'true'
+        out.gsub!(embed, "<center>#{embedit.html}</center>")
+      end
+    end
+    out
   end
 end

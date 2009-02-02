@@ -3,8 +3,8 @@ comment ||= @comment
 truncate = truncate.nil? ? true : truncate
 
 
-youtube_videos = comment.comment.scan(/\[youtube:+.+\]/)
-c = comment.comment.dup.gsub(/\[youtube:+.+\]/, '')
+embedit_videos = comment.comment.scan(/\[embedit:.+\]/)
+c = comment.comment.dup.gsub(/\[embedit:.+\]/, '')
 -%>
 
 
@@ -16,10 +16,10 @@ c = comment.comment.dup.gsub(/\[youtube:+.+\]/, '')
   <div class="comment_message jstruncate">
       <%= sanitize(textilize(c)) %>
   </div>
-  <% unless youtube_videos.empty? %>
-    <strong><%= pluralize youtube_videos.size, 'video' %>:</strong><br/>
-    <% youtube_videos.each do |o| %>
-    <%= tb_video_link(o.gsub!(/\[youtube\:|\]/, '')) %>
+  <% unless embedit_videos.empty? %>
+    <strong><%= pluralize embedit_videos.size, 'video' %>:</strong><br/>
+    <% embedit_videos.each do |o| %>
+    <%= tb_video_link(o.match(/\[embedit:(.+)\]/)[1].strip!) %>
   <% end
   end %>
   <div class="clear"></div>

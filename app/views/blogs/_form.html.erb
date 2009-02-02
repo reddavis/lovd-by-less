@@ -11,7 +11,7 @@ blog ||= @blog
     <%= f.text_field :title %>
     <%= f.text_area :body %>
     
-		To embed media just wrap the url in [embedit] [/embedit] tags.
+		To embed media just wrap the url in [embedit: url_goes_here]. <%= link_to 'Here a list of supported services', 'http://embedit.me/supported-services' %>.
 	  <div class="row button">
     	<%= f.submit 'Save', :class=>'button' %>
   	</div>

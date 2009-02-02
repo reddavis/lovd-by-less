@@ -8,16 +8,4 @@ module BlogsHelper
     html
   end
   
-  
-  def blog_body_content blog  
-    out = sanitize textilize(blog.body)
-    embedables = blog.body.scan(/\[embedit:.+\]/).each do |embed|
-      url = embed.match(/\[embedit:(.+)\]/)[1].strip!
-      embedit = EmbeditRuby::Url.new(url, :height => 250)
-      if embedit.valid? == 'true'
-        out.gsub!(embed, "<center>#{embedit.html}</center>")
-      end
-    end
-    out
-  end
 end

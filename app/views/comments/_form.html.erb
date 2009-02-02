@@ -7,7 +7,7 @@ comment ||= @comment
 	<% less_remote_form_for(:comment, :url => profile_comments_path(@profile), :html => { :id => "#{dom_id(@profile)}_comment_form"} ) do |f| %>
 	<div id="thickbox_form">
 		<%= f.text_area :comment  %>
-		To include a youtube video use: [youtube: address_of_video]
+		To embed media just wrap the url in [embedit: url_goes_here]. <%= link_to 'Here a list of supported services', 'http://embedit.me/supported-services' %>.
 		<div class="row button"><%= f.submit 'Add Comment', :class=>"button" %></div>
 		<div class="clear"></div>
     </div>
