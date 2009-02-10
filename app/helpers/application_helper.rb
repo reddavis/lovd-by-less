@@ -44,7 +44,7 @@ module ApplicationHelper
     error_list
   end
     
-  def inline_tb_link link_text, inlineId, html = {}, tb = {}
+  def inline_tb_link(link_text, inlineId, html = {}, tb = {})
     html_opts = {
       :title => '',
       :class => 'thickbox'
@@ -61,10 +61,10 @@ module ApplicationHelper
   
   def tb_video_link(embedit_url)
     return if embedit_url.blank?
-    video = EmbeditRuby::Url.new(embedit_url, :width => 355, :width => 430)
+    video = EmbeditRuby::Url.new(embedit_url, :height => 355, :width => 430)
     return "(video not found)" if video.valid? == 'false'
-    id = rand(99)
-    inline_tb_link(video.title, id, {}, {:height => 355, :width => 430}) + %(<div id="#{id}" style="display:none;">#{video.html}</div>)
+    id = Digest::SHA1.hexdigest("--#{video.title}--")
+    inline_tb_link(video.title, h(id), {}, {:height => 355, :width => 430}) + %(<div id="#{h(id)}" style="display:none;">#{video.html}</div>)
   end
   
   def me
