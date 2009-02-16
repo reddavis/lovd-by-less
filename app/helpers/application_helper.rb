@@ -79,11 +79,11 @@ module ApplicationHelper
     yield if is_admin? @u
   end
   
-  def body_content(post, height=280)
+  def body_content(post)
     out = sanitize textilize(post)
     embedables = post.scan(EmbeditRuby::REGEX).each do |embed|
       url = grab_url(embed)
-      embedit = EmbeditRuby::Url.new(url, :height => height)
+      embedit = grab_embedit(url)
       if embedit.valid? == 'true'
         out.gsub!(embed, "<center>#{embedit.html}</center>")
       end
@@ -95,5 +95,15 @@ module ApplicationHelper
     b = post.match(EmbeditRuby::EXTRACT_URL)
     return b[1].strip! unless b[1].nil?
     b[2].strip!
+  end
+  
+  private
+  
+  def grab_embedit(url, height=280)
+    if url.match(/twitter/)
+      EmbeditRuby::Url.new(url, :height => 100)
+    else
+      EmbeditRuby::Url.new(url, :height => height)
+    end
   end
 end
