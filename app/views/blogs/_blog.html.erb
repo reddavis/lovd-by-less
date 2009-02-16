@@ -30,7 +30,7 @@ blog ||= @blog
 		<div id="<%= dom_id(blog) %>_new_comment" class="hidden">
 			<% less_remote_form_for :comment, :url => blog_comments_path(blog), :html => { :id => "#{dom_id(blog)}_comment_form"} do |f| %>
 				<%= f.text_area :comment %>
-    		To embed media just wrap the url in [embedit: url_goes_here]. <%= link_to 'Here a list of supported services', 'http://embedit.me/supported-services' %>.
+    		To embed media just wrap the url in [embedit: url_goes_here]. <%= link_to 'Here a list of supported services', 'http://embedit.me/lovd-by-less' %>.
 				<div class="row button">
 				<%= f.submit 'Add Comment', :class=>'button' %>
 				<div class="clear"></div>
