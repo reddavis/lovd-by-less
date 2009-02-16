@@ -3,8 +3,8 @@ comment ||= @comment
 truncate = truncate.nil? ? true : truncate
 
 
-embedit_videos = comment.comment.scan(/\[embedit:.+\]/)
-c = comment.comment.dup.gsub(/\[embedit:.+\]/, '')
+embedit_videos = comment.comment.scan(EmbeditRuby::REGEX)
+c = comment.comment.dup.gsub(EmbeditRuby::REGEX, '')
 -%>
 
 
@@ -19,7 +19,7 @@ c = comment.comment.dup.gsub(/\[embedit:.+\]/, '')
   <% unless embedit_videos.empty? %>
     <strong><%= pluralize embedit_videos.size, 'video' %>:</strong><br/>
     <% embedit_videos.each do |o| %>
-    <%= tb_video_link(o.match(/\[embedit:(.+)\]/)[1].strip!) %>
+    <%= tb_video_link(grab_url(o)) %>
   <% end
   end %>
   <div class="clear"></div>

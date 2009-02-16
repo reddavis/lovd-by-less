@@ -81,13 +81,19 @@ module ApplicationHelper
   
   def body_content(post, height=280)
     out = sanitize textilize(post)
-    embedables = post.scan(/\[embedit:.+\]/).each do |embed|
-      url = embed.match(/\[embedit:(.+)\]/)[1].strip!
+    embedables = post.scan(EmbeditRuby::REGEX).each do |embed|
+      url = grab_url(embed)
       embedit = EmbeditRuby::Url.new(url, :height => height)
       if embedit.valid? == 'true'
         out.gsub!(embed, "<center>#{embedit.html}</center>")
       end
     end
     out
+  end
+  
+  def grab_url(post)
+    b = post.match(EmbeditRuby::EXTRACT_URL)
+    return b[1].strip! unless b[1].nil?
+    b[2].strip!
   end
 end

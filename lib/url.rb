@@ -1,4 +1,6 @@
 module EmbeditRuby
+  REGEX = /\[embedit:.+\]|\[youtube:.+\]/
+  EXTRACT_URL = /\[embedit:(.+)\]|\[youtube:(.+)\]/
   class Url
   
     attr_reader :xml
