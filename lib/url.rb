@@ -5,7 +5,7 @@ module EmbeditRuby
   
     attr_reader :xml
   
-    def initialize(url, size={}, api_key=nil, frog_key=nil)
+    def initialize(url, size={}, api_key=987609154636712687879291349767715830500588165756, frog_key=36001462254663286811178830510477)
       url = CGI.escape(url)
       @xml = EmbeditRuby::Parser.new(open("http://embedit.me/url/new.xml/?url=#{url}&height=#{size[:height]}&width=#{size[:width]}&api_key=#{api_key}&frog_key=#{frog_key}"))
     end

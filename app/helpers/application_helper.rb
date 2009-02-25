@@ -54,10 +54,10 @@ module ApplicationHelper
       :width => 400,
       :inlineId => inlineId
     }.merge!(tb)
-    
+                        
     path = '#TB_inline'.add_param(tb_opts)
     link_to(link_text, path, html_opts)
-  end
+  end                   
   
   def tb_video_link(embedit_url)
     return if embedit_url.blank?
