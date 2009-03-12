@@ -23,6 +23,7 @@ class CommentsController < ApplicationController
             page.visual_effect :highlight, "comment_#{@comment.id}".to_sym
             page << 'tb_remove();'
             page << "jq('#comment_comment').val('');"
+            page << "tb_init('a.thickbox, area.thickbox, input.thickbox')"
           end
         end
       else
@@ -36,18 +37,18 @@ class CommentsController < ApplicationController
   end
   
   protected
-    
-    def parent; @blog || @profile || nil; end
-    
-    def setup
-      @profile = Profile[params[:profile_id]] if params[:profile_id]
-      @user = @profile.user if @profile
-      @blog = Blog.find(params[:blog_id]) unless params[:blog_id].blank?
-      @parent = parent
-    end
+      
+  def parent; @blog || @profile || nil; end
   
-    def allow_to
-      super :user, :only => [:index, :create]
-    end
+  def setup
+    @profile = Profile[params[:profile_id]] if params[:profile_id]
+    @user = @profile.user if @profile
+    @blog = Blog.find(params[:blog_id]) unless params[:blog_id].blank?
+    @parent = parent
+  end
+
+  def allow_to
+    super :user, :only => [:index, :create]
+  end
 
 end

@@ -9,6 +9,7 @@ c = comment.comment.dup.gsub(EmbeditRuby::REGEX, '')
 
 
 <div id="<%= comment.dom_id %>" class="comment_holder">
+  <%= comment.dom_id %>
   <%= icon comment.profile, :small, :class => 'left avatar_on_comment' %> 
   <div class="date_details_white">
     <%= time_ago_in_words comment.created_at %> ago, <%= link_to h(comment.profile.f), comment.profile %> wrote: 
@@ -19,7 +20,7 @@ c = comment.comment.dup.gsub(EmbeditRuby::REGEX, '')
   <% unless embedit_videos.empty? %>
     <strong><%= pluralize embedit_videos.size, 'video' %>:</strong><br/>
     <% embedit_videos.each do |o| %>
-    <%= tb_video_link(grab_url(o)) %>
+      <%= tb_video_link(grab_url(o)) %>
   <% end
   end %>
   <div class="clear"></div>
