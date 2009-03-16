@@ -21,10 +21,13 @@ class Comment < ActiveRecord::Base
   
   belongs_to :commentable, :polymorphic => true
   belongs_to :profile
-
+  
+  has_many :embeds, :as => :embed_owner
+  
   def after_create
     feed_item = FeedItem.create(:item => self)
     ([profile] + profile.friends + profile.followers).each{ |p| p.feed_items << feed_item }
+    create_embeds
   end
   
   
@@ -36,4 +39,14 @@ class Comment < ActiveRecord::Base
         profile1.id, profile2.id, profile2.id, profile1.id]
     })
   end
+  
+  private
+  
+  def create_embeds
+    comment.scan(EmbeditRuby::REGEX).each do |video|
+      url = video.match(EmbeditRuby::EXTRACT_URL)[1].strip!
+      embed = embeds.create(:url => url)
+    end
+  end
+  
 end
