@@ -9,7 +9,15 @@ class Embed < ActiveRecord::Base
   private
   
   def add_information
-    embed = EmbeditRuby::Url.new(url)
+    if embed_owner_type == 'Comment' 
+      embed = EmbeditRuby::Url.new(url, {:height => 355, :width => 430})
+    elsif embed_owner_type == 'Blog'
+      if url.match(/twitter/)
+        embed = EmbeditRuby::Url.new(url, {:height => 100})
+      else
+        embed = EmbeditRuby::Url.new(url, {:height => 280})
+      end
+    end
     if embed.valid? == 'true'
       self.title = embed.title
       self.html = embed.html
@@ -17,3 +25,4 @@ class Embed < ActiveRecord::Base
   end
   
 end
+

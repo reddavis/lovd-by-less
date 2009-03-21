@@ -20,7 +20,7 @@ c = comment.comment.dup.gsub(EmbeditRuby::REGEX, '')
   <% unless embedit_videos.empty? %>
     <strong><%= pluralize embedit_videos.size, 'video' %>:</strong><br/>
     <% embedit_videos.each do |o| %>
-      <%= tb_video_link(grab_url(o)) %>
+      <%= tb_video_link(grab_embed(o, comment)) %>
   <% end
   end %>
   <div class="clear"></div>

@@ -59,12 +59,10 @@ module ApplicationHelper
     link_to(link_text, path, html_opts)
   end                   
   
-  def tb_video_link(embedit_url)
-    return if embedit_url.blank?
-    video = EmbeditRuby::Url.new(embedit_url, :height => 355, :width => 430)
-    return "(video not found)" if video.valid? == 'false'
-    id = Digest::SHA1.hexdigest("--#{video.title}--")
-    inline_tb_link(video.title, h(id), {}, {:height => 355, :width => 430}) + %(<div id="#{h(id)}" style="display:none;">#{video.html}</div>)
+  def tb_video_link(embedit_data)
+    return "(video not found)" if embedit_data.nil?
+    id = Digest::SHA1.hexdigest("--#{embedit_data.title}--")
+    inline_tb_link(embedit_data.title, h(id), {}, {:height => 355, :width => 430}) + %(<div id="#{h(id)}" style="display:none;">#{embedit_data.html}</div>)
   end
   
   def me
@@ -79,31 +77,22 @@ module ApplicationHelper
     yield if is_admin? @u
   end
   
-  def body_content(post)
+  def body_content(post, main_object)
     out = sanitize textilize(post)
     embedables = post.scan(EmbeditRuby::REGEX).each do |embed|
-      url = grab_url(embed)
-      embedit = grab_embedit(url)
-      if embedit.valid? == 'true'
+      embedit = grab_embed(embed, main_object)
+      if embedit
         out.gsub!(embed, "<center>#{embedit.html}</center>")
       end
     end
     out
   end
   
-  def grab_url(post)
+  # Main object would be Blog, Comment etc
+  def grab_embed(post, main_object)
     b = post.match(EmbeditRuby::EXTRACT_URL)
-    return b[1].strip! unless b[1].nil?
-    b[2].strip!
+    url = b[1].nil? ? b[2].strip! : b[1].strip!
+    embedit_data = main_object.embeds.find_by_url(url)
   end
   
-  private
-  
-  def grab_embedit(url, height=280)
-    if url.match(/twitter/)
-      EmbeditRuby::Url.new(url, :height => 100)
-    else
-      EmbeditRuby::Url.new(url, :height => height)
-    end
-  end
 end

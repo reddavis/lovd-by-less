@@ -13,7 +13,7 @@ blog ||= @blog
 
 	<h1><%= sanitize textilize(blog.title) %></h1>
 	<div>
-	  <%= body_content(blog.body) %>
+	  <%= body_content(blog.body, blog) %>
 	</div>
 	<div id="border_top"><%= "Comments (#{blog.comments.size})" %> | <%= inline_tb_link('Add a Comment', "#{dom_id(blog)}_new_comment", :title => "Leaving A Comment On #{h blog.title}") if @p %>
   </div>

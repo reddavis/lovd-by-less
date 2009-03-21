@@ -22,7 +22,7 @@ class Comment < ActiveRecord::Base
   belongs_to :commentable, :polymorphic => true
   belongs_to :profile
   
-  has_many :embeds, :as => :embed_owner
+  has_many :embeds, :as => :embed_owner, :dependent => :destroy
   
   def after_create
     feed_item = FeedItem.create(:item => self)
